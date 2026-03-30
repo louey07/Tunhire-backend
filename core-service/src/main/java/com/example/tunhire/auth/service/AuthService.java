@@ -1,0 +1,24 @@
+package com.example.tunhire.auth.service;
+
+import com.example.tunhire.auth.dto.AuthResponse;
+import com.example.tunhire.auth.dto.LoginRequest;
+import com.example.tunhire.auth.dto.RegisterRequest;
+import com.example.tunhire.auth.dto.UserDto;
+
+public interface AuthService {
+
+    /**
+     * Register a new user and return a JWT token
+     */
+    AuthResponse register(RegisterRequest request);
+
+    /**
+     * Login with email and password, return a JWT token
+     */
+    AuthResponse login(LoginRequest request);
+
+    /**
+     * Get the currently authenticated user by email
+     */
+    UserDto getCurrentUser(String email);
+}
