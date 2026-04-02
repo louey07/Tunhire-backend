@@ -7,6 +7,7 @@ import com.example.tunhire.auth.dto.UserDto;
 import com.example.tunhire.auth.entity.User;
 import com.example.tunhire.auth.repository.UserRepository;
 import com.example.tunhire.auth.security.JwtUtil;
+import com.example.tunhire.common.exception.InvalidCredentialsException;
 import com.example.tunhire.common.exception.ResourceNotFoundException;
 import java.time.Instant;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -79,11 +80,13 @@ public class AuthServiceImpl implements AuthService {
         // Find user by email
         User user = userRepository
             .findByEmail(request.email())
-            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            .orElseThrow(() ->
+                new InvalidCredentialsException("Invalid email or password")
+            );
 
         // Check password
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid password");
+            throw new InvalidCredentialsException("Invalid email or password");
         }
 
         // Generate JWT token

@@ -8,6 +8,7 @@ import com.example.tunhire.jobs.dto.JobResponse;
 import com.example.tunhire.jobs.service.JobService;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class JobController {
 
     /** POST /jobs — create a job (RECRUITER only) */
     @PostMapping
+    @PreAuthorize("hasRole('RECRUITER')")
     public ApiResponse<JobResponse> create(
         @Valid @RequestBody JobRequest request,
         Authentication authentication
@@ -57,6 +59,7 @@ public class JobController {
 
     /** PUT /jobs/{id} — update job (owner only) */
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('RECRUITER')")
     public ApiResponse<JobResponse> update(
         @PathVariable Long id,
         @Valid @RequestBody JobRequest request,
@@ -71,6 +74,7 @@ public class JobController {
 
     /** DELETE /jobs/{id} — delete job (owner only) */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('RECRUITER')")
     public ApiResponse<Void> delete(
         @PathVariable Long id,
         Authentication authentication

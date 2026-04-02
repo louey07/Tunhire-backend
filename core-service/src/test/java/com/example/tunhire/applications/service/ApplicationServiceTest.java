@@ -51,10 +51,12 @@ class ApplicationServiceTest {
             .thenReturn(null);
 
         var response = applicationService.create(
-            new ApplicationCreateRequest(10L, 20L)
+            new ApplicationCreateRequest(10L),
+            20L
         );
         assertThat(response.status()).isEqualTo(ApplicationStatus.SUBMITTED);
         assertThat(response.createdAt()).isNotNull();
+        assertThat(response.userId()).isEqualTo(20L);
     }
 
     @Test

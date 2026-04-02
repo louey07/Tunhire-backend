@@ -12,6 +12,7 @@ import com.example.tunhire.companies.service.CompanyDashboardService;
 import com.example.tunhire.companies.service.CompanyService;
 import java.security.Principal;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,7 @@ public class CompaniesController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
     public ApiResponse<CompanyResponse> create(
         @RequestBody CompanyCreateRequest request,
         Principal principal
@@ -64,6 +66,7 @@ public class CompaniesController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
     public ApiResponse<CompanyResponse> update(
         @PathVariable Long id,
         @RequestBody CompanyUpdateRequest request,

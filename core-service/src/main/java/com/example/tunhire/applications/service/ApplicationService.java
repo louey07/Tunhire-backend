@@ -9,83 +9,97 @@ import com.example.tunhire.applications.repository.ApplicationRepository;
 import com.example.tunhire.common.candidate.CandidateProfileProvider;
 import com.example.tunhire.common.candidate.CandidateSummaryDto;
 import com.example.tunhire.common.exception.ResourceNotFoundException;
-import org.springframework.stereotype.Service;
-
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationService {
-	private final ApplicationRepository applicationRepository;
-	private final JobLookupService jobLookupService;
-	private final CandidateProfileProvider candidateProfileProvider;
 
-	public ApplicationService(
-			ApplicationRepository applicationRepository,
-			JobLookupService jobLookupService,
-			CandidateProfileProvider candidateProfileProvider
-	) {
-		this.applicationRepository = applicationRepository;
-		this.jobLookupService = jobLookupService;
-		this.candidateProfileProvider = candidateProfileProvider;
-	}
+    private final ApplicationRepository applicationRepository;
+    private final JobLookupService jobLookupService;
+    private final CandidateProfileProvider candidateProfileProvider;
 
-	public ApplicationResponse create(ApplicationCreateRequest request) {
-		Application application = new Application();
-		application.setJobId(request.jobId());
-		application.setUserId(request.userId());
-		application.setStatus(ApplicationStatus.SUBMITTED);
-		application.setCreatedAt(Instant.now());
-		return toResponse(applicationRepository.save(application));
-	}
+    public ApplicationService(
+        ApplicationRepository applicationRepository,
+        JobLookupService jobLookupService,
+        CandidateProfileProvider candidateProfileProvider
+    ) {
+        this.applicationRepository = applicationRepository;
+        this.jobLookupService = jobLookupService;
+        this.candidateProfileProvider = candidateProfileProvider;
+    }
 
-	public ApplicationResponse getById(Long id) {
-		Application application = applicationRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Application not found"));
-		return toResponse(application);
-	}
+    public ApplicationResponse create(
+        ApplicationCreateRequest request,
+        Long userId
+    ) {
+        Application application = new Application();
+        application.setJobId(request.jobId());
+        application.setUserId(userId);
+        application.setStatus(ApplicationStatus.SUBMITTED);
+        application.setCreatedAt(Instant.now());
+        return toResponse(applicationRepository.save(application));
+    }
 
-	public List<ApplicationSummary> getByJobId(Long jobId) {
-		return toSummaryList(applicationRepository.findByJobId(jobId));
-	}
+    public ApplicationResponse getById(Long id) {
+        Application application = applicationRepository
+            .findById(id)
+            .orElseThrow(() ->
+                new ResourceNotFoundException("Application not found")
+            );
+        return toResponse(application);
+    }
 
-	public List<ApplicationSummary> getByUserId(Long userId) {
-		return toSummaryList(applicationRepository.findByUserId(userId));
-	}
+    public List<ApplicationSummary> getByJobId(Long jobId) {
+        return toSummaryList(applicationRepository.findByJobId(jobId));
+    }
 
-	public List<ApplicationSummary> getApplicationsForCompany(Long companyId) {
-		List<Long> jobIds = jobLookupService.getJobIdsByCompanyId(companyId);
-		if (jobIds == null || jobIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-		return toSummaryList(applicationRepository.findByJobIdIn(jobIds));
-	}
+    public List<ApplicationSummary> getByUserId(Long userId) {
+        return toSummaryList(applicationRepository.findByUserId(userId));
+    }
 
-	private ApplicationResponse toResponse(Application application) {
-		CandidateSummaryDto summary = candidateProfileProvider.getCandidateSummary(application.getUserId());
-		return new ApplicationResponse(
-				application.getId(),
-				application.getJobId(),
-				application.getUserId(),
-				summary != null ? summary.firstName() : "Unknown",
-				summary != null ? summary.lastName() : "Unknown",
-				summary != null ? summary.resumeUrl() : null,
-				application.getStatus(),
-				application.getCreatedAt()
-		);
-	}
+    public List<ApplicationSummary> getApplicationsForCompany(Long companyId) {
+        List<Long> jobIds = jobLookupService.getJobIdsByCompanyId(companyId);
+        if (jobIds == null || jobIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return toSummaryList(applicationRepository.findByJobIdIn(jobIds));
+    }
 
-	private List<ApplicationSummary> toSummaryList(List<Application> applications) {
-		return applications.stream()
-				.map(app -> new ApplicationSummary(
-						app.getId(),
-						app.getJobId(),
-						app.getUserId(),
-						app.getStatus(),
-						app.getCreatedAt()
-				))
-				.collect(Collectors.toList());
-	}
+    private ApplicationResponse toResponse(Application application) {
+        CandidateSummaryDto summary =
+            candidateProfileProvider.getCandidateSummary(
+                application.getUserId()
+            );
+        return new ApplicationResponse(
+            application.getId(),
+            application.getJobId(),
+            application.getUserId(),
+            summary != null ? summary.firstName() : "Unknown",
+            summary != null ? summary.lastName() : "Unknown",
+            summary != null ? summary.resumeUrl() : null,
+            application.getStatus(),
+            application.getCreatedAt()
+        );
+    }
+
+    private List<ApplicationSummary> toSummaryList(
+        List<Application> applications
+    ) {
+        return applications
+            .stream()
+            .map(app ->
+                new ApplicationSummary(
+                    app.getId(),
+                    app.getJobId(),
+                    app.getUserId(),
+                    app.getStatus(),
+                    app.getCreatedAt()
+                )
+            )
+            .collect(Collectors.toList());
+    }
 }
