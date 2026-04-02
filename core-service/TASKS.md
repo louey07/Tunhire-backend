@@ -155,51 +155,51 @@ These tasks must be completed first because everything else builds on top of a c
 > linked to a `User` by `userId` (Long), not by a JPA entity reference.
 
 ### TASK-015 — Create the `candidate` module structure
-- [ ] Create the package tree: `candidate/entity`, `candidate/dto`, `candidate/service`, `candidate/controller`, `candidate/repository`
+- [x] Create the package tree: `candidate/entity`, `candidate/dto`, `candidate/service`, `candidate/controller`, `candidate/repository`
 - [x] Register the module in `ArchitectureTest.java` (TASK-006)
 
 ### TASK-016 — Model `CandidateProfile` entity
-- [ ] Fields: `id`, `userId` (Long, unique), `bio`, `resumeUrl`, `location`, `availableFrom` (LocalDate), `yearsOfExperience` (Integer)
-- [ ] Add `@UniqueConstraint(columnNames = "user_id")`
-- [ ] Create `CandidateProfileRepository` with `findByUserId(Long userId)`
+- [x] Fields: `id`, `userId` (Long, unique), `bio`, `resumeUrl`, `location`, `availableFrom` (LocalDate), `yearsOfExperience` (Integer)
+- [x] Add `@UniqueConstraint(columnNames = "user_id")`
+- [x] Create `CandidateProfileRepository` with `findByUserId(Long userId)`
 
 ### TASK-017 — Model candidate skills
-- [ ] Create `ProficiencyLevel` enum: `BEGINNER`, `INTERMEDIATE`, `EXPERT`
-- [ ] Create `CandidateSkill` entity: `id`, `profileId` (Long), `skillName`, `proficiencyLevel`
-- [ ] Create `CandidateSkillRepository` with `findByProfileId` and `deleteByIdAndProfileId`
+- [x] Create `ProficiencyLevel` enum: `BEGINNER`, `INTERMEDIATE`, `EXPERT`
+- [x] Create `CandidateSkill` entity: `id`, `profileId` (Long), `skillName`, `proficiencyLevel`
+- [x] Create `CandidateSkillRepository` with `findByProfileId` and `deleteByIdAndProfileId`
 
 ### TASK-018 — Implement `CandidateService`
-- [ ] Create `CandidateService` interface:
+- [x] Create `CandidateService` interface:
   - `getMyProfile(Long userId): CandidateProfileResponse`
   - `updateProfile(Long userId, UpdateProfileRequest request): CandidateProfileResponse`
   - `addSkill(Long userId, SkillRequest request): CandidateSkillResponse`
   - `removeSkill(Long userId, Long skillId)`
   - `getPublicProfile(Long userId): CandidateProfileResponse`
-- [ ] Implement `CandidateServiceImpl`
-- [ ] Use lazy-creation: if no profile exists for a `userId`, create an empty one on first access
+- [x] Implement `CandidateServiceImpl`
+- [x] Use lazy-creation: if no profile exists for a `userId`, create an empty one on first access
 
 ### TASK-019 — Add candidate profile endpoints
-- [ ] `GET /candidates/me` — get the authenticated candidate's full profile (`ROLE_CANDIDATE` only)
-- [ ] `PUT /candidates/me` — update bio, resumeUrl, location, availableFrom, yearsOfExperience
-- [ ] `POST /candidates/me/skills` — add a skill to the profile
-- [ ] `DELETE /candidates/me/skills/{id}` — remove a skill from the profile
-- [ ] `GET /candidates/{id}` — get a candidate's public profile (accessible to `ROLE_RECRUITER`)
+- [x] `GET /candidates/me` — get the authenticated candidate's full profile (`ROLE_CANDIDATE` only)
+- [x] `PUT /candidates/me` — update bio, resumeUrl, location, availableFrom, yearsOfExperience
+- [x] `POST /candidates/me/skills` — add a skill to the profile
+- [x] `DELETE /candidates/me/skills/{id}` — remove a skill from the profile
+- [x] `GET /candidates/{id}` — get a candidate's public profile (accessible to `ROLE_RECRUITER`)
 
 ### TASK-020 — Create `CandidateProfileProvider` interface for cross-module access
 > The `applications` module needs basic candidate info to enrich application responses for recruiters.
 > It must not import `CandidateProfileRepository` directly — same pattern as `JobLookupService`.
-- [ ] Define `CandidateProfileProvider` interface in the `applications` module (or `common`)
-- [ ] Method: `getCandidateSummary(Long userId): CandidateSummaryDto`
-- [ ] `CandidateSummaryDto`: `userId`, `firstName`, `lastName`, `resumeUrl`
-- [ ] Implement `DefaultCandidateProfileProvider` in the `candidate` module
-- [ ] Inject `CandidateProfileProvider` into `ApplicationService` to enrich `ApplicationResponse`
-- [ ] Add ArchUnit rule: `applications` must not import from `candidate` directly
+- [x] Define `CandidateProfileProvider` interface in the `applications` module (or `common`)
+- [x] Method: `getCandidateSummary(Long userId): CandidateSummaryDto`
+- [x] `CandidateSummaryDto`: `userId`, `firstName`, `lastName`, `resumeUrl`
+- [x] Implement `DefaultCandidateProfileProvider` in the `candidate` module
+- [x] Inject `CandidateProfileProvider` into `ApplicationService` to enrich `ApplicationResponse`
+- [x] Add ArchUnit rule: `applications` must not import from `candidate` directly
 
 ### TASK-021 — Auto-create a `CandidateProfile` on candidate registration
-- [ ] Option A (simple): lazily create the profile on first `getMyProfile()` call
-- [ ] Option B (event-driven): publish a `UserRegisteredEvent` from `AuthServiceImpl` and handle it in `CandidateService` — keeps `auth` decoupled from `candidate`
-- [ ] Decide and implement one approach consistently
-- [ ] Verify a newly registered candidate can immediately call `GET /candidates/me` without a 404
+- [x] Option A (simple): lazily create the profile on first `getMyProfile()` call
+- [x] Option B (event-driven): publish a `UserRegisteredEvent` from `AuthServiceImpl` and handle it in `CandidateService` — keeps `auth` decoupled from `candidate`
+- [x] Decide and implement one approach consistently
+- [x] Verify a newly registered candidate can immediately call `GET /candidates/me` without a 404
 
 ---
 

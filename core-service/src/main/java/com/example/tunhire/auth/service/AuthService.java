@@ -25,4 +25,9 @@ public interface AuthService {
      * Get the user ID by email
      */
     Long getUserIdByEmail(String email);
+
+    /**
+     * Get the user by ID
+     */
+    UserDto getUserById(Long id);
 }

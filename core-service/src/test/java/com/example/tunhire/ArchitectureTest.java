@@ -42,6 +42,17 @@ class ArchitectureTest {
     }
 
     @Test
+    void applicationsShouldNotDependOnCandidateDirectly() {
+        ArchRule rule = ArchRuleDefinition.noClasses()
+            .that()
+            .resideInAnyPackage("..applications..")
+            .should()
+            .dependOnClassesThat()
+            .resideInAnyPackage("..candidate.repository..", "..candidate.controller..", "..candidate.service..", "..candidate.entity..");
+        rule.check(classes);
+    }
+
+    @Test
     void companiesShouldNotDependOnApplicationsDirectly() {
         ArchRule rule = ArchRuleDefinition.noClasses()
             .that()

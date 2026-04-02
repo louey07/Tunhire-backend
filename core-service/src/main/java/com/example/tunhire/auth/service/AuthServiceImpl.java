@@ -107,6 +107,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public UserDto getUserById(Long id) {
+        User user = userRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return toDto(user);
+    }
+
+    @Override
     public Long getUserIdByEmail(String email) {
         return userRepository
             .findByEmail(email)
