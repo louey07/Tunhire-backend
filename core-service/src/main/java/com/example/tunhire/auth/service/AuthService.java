@@ -6,7 +6,6 @@ import com.example.tunhire.auth.dto.RegisterRequest;
 import com.example.tunhire.auth.dto.UserDto;
 
 public interface AuthService {
-
     /**
      * Register a new user and return a JWT token
      */
@@ -21,4 +20,9 @@ public interface AuthService {
      * Get the currently authenticated user by email
      */
     UserDto getCurrentUser(String email);
+
+    /**
+     * Get the user ID by email
+     */
+    Long getUserIdByEmail(String email);
 }

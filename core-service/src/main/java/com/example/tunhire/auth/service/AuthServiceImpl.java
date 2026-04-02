@@ -8,10 +8,9 @@ import com.example.tunhire.auth.entity.User;
 import com.example.tunhire.auth.repository.UserRepository;
 import com.example.tunhire.auth.security.JwtUtil;
 import com.example.tunhire.common.exception.ResourceNotFoundException;
+import java.time.Instant;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -21,9 +20,9 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtil jwtUtil;
 
     public AuthServiceImpl(
-            UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
-            JwtUtil jwtUtil
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        JwtUtil jwtUtil
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -39,10 +38,11 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public AuthResponse register(RegisterRequest request) {
-
         // Check if email already exists
         if (userRepository.existsByEmail(request.email())) {
-            throw new IllegalArgumentException("Email already registered: " + request.email());
+            throw new IllegalArgumentException(
+                "Email already registered: " + request.email()
+            );
         }
 
         // Build the new user entity
@@ -60,7 +60,10 @@ public class AuthServiceImpl implements AuthService {
         User saved = userRepository.save(user);
 
         // Generate JWT token
-        String token = jwtUtil.generateToken(saved.getEmail(), saved.getRole().name());
+        String token = jwtUtil.generateToken(
+            saved.getEmail(),
+            saved.getRole().name()
+        );
 
         return new AuthResponse(token, toDto(saved));
     }
@@ -73,10 +76,10 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public AuthResponse login(LoginRequest request) {
-
         // Find user by email
-        User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository
+            .findByEmail(request.email())
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         // Check password
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
@@ -84,7 +87,10 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // Generate JWT token
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+        String token = jwtUtil.generateToken(
+            user.getEmail(),
+            user.getRole().name()
+        );
 
         return new AuthResponse(token, toDto(user));
     }
@@ -94,9 +100,18 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public UserDto getCurrentUser(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return toDto(user);
+    }
+
+    @Override
+    public Long getUserIdByEmail(String email) {
+        return userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"))
+            .getId();
     }
 
     /**
@@ -104,13 +119,13 @@ public class AuthServiceImpl implements AuthService {
      */
     private UserDto toDto(User user) {
         return new UserDto(
-                user.getId(),
-                user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getPhone(),
-                user.getRole(),
-                user.getCreatedAt()
+            user.getId(),
+            user.getEmail(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getPhone(),
+            user.getRole(),
+            user.getCreatedAt()
         );
     }
 }

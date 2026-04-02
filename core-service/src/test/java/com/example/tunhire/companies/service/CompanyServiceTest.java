@@ -4,6 +4,7 @@ import com.example.tunhire.companies.dto.CompanyCreateRequest;
 import com.example.tunhire.companies.dto.CompanyResponse;
 import com.example.tunhire.companies.entity.Company;
 import com.example.tunhire.companies.repository.CompanyRepository;
+import com.example.tunhire.recruiter.service.MembershipService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,12 +15,16 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CompanyServiceTest {
 	@Mock
 	private CompanyRepository companyRepository;
+
+	@Mock
+	private MembershipService membershipService;
 
 	@InjectMocks
 	private CompanyService companyService;
@@ -45,7 +50,7 @@ class CompanyServiceTest {
 				null,
 				null,
 				null
-		));
+		), 1L);
 
 		CompanyResponse fetched = companyService.getBySlug("acme");
 		assertThat(fetched.id()).isEqualTo(created.id());

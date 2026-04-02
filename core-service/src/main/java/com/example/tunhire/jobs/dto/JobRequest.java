@@ -1,28 +1,23 @@
 package com.example.tunhire.jobs.dto;
 
 import jakarta.validation.constraints.NotBlank;
-
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record JobRequest(
+    @NotBlank(message = "Title is required") String title,
 
-        @NotBlank(message = "Title is required")
-        String title,
+    @NotNull(message = "Company ID is required") Long companyId,
 
-        @NotBlank(message = "Company is required")
-        String company,
+    @NotBlank(message = "Location is required") String location,
 
-        @NotBlank(message = "Location is required")
-        String location,
+    @NotBlank(message = "Description is required") String description,
 
-        @NotBlank(message = "Description is required")
-        String description,
+    String contractType,
 
-        String contractType,
+    String experienceLevel,
 
-        String experienceLevel,
+    BigDecimal salaryMin,
 
-        BigDecimal salaryMin,
-
-        BigDecimal salaryMax
+    BigDecimal salaryMax
 ) {}
