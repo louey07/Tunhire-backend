@@ -1,15 +1,18 @@
 package com.tunhire.tunhire.auth.service;
+import com.tunhire.tunhire.auth.AuthService;
+import com.tunhire.tunhire.auth.CandidateRegisteredEvent;
 
-import com.tunhire.tunhire.auth.dto.AuthResponse;
-import com.tunhire.tunhire.auth.dto.LoginRequest;
-import com.tunhire.tunhire.auth.dto.RegisterRequest;
-import com.tunhire.tunhire.auth.dto.UserDto;
+import com.tunhire.tunhire.auth.AuthResponse;
+import com.tunhire.tunhire.auth.LoginRequest;
+import com.tunhire.tunhire.auth.RegisterRequest;
+import com.tunhire.tunhire.auth.UserDto;
 import com.tunhire.tunhire.auth.entity.User;
 import com.tunhire.tunhire.auth.repository.UserRepository;
 import com.tunhire.tunhire.auth.security.JwtUtil;
-import com.tunhire.tunhire.common.exception.InvalidCredentialsException;
-import com.tunhire.tunhire.common.exception.ResourceNotFoundException;
+import com.tunhire.tunhire.common.InvalidCredentialsException;
+import com.tunhire.tunhire.common.ResourceNotFoundException;
 import java.time.Instant;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +24,18 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final ApplicationEventPublisher events;
 
     public AuthServiceImpl(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
-        JwtUtil jwtUtil
+        JwtUtil jwtUtil,
+        ApplicationEventPublisher events
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.events = events;
     }
 
     /**
@@ -59,6 +65,11 @@ public class AuthServiceImpl implements AuthService {
 
         // Save to database
         User saved = userRepository.save(user);
+        
+        // Publish event for candidate registration
+        if (saved.getRole() == com.tunhire.tunhire.auth.entity.Role.CANDIDATE) {
+            events.publishEvent(new CandidateRegisteredEvent(saved.getId()));
+        }
 
         // Generate JWT token
         String token = jwtUtil.generateToken(

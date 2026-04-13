@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tunhire.tunhire.auth.dto.AuthResponse;
-import com.tunhire.tunhire.auth.dto.LoginRequest;
-import com.tunhire.tunhire.auth.dto.RegisterRequest;
-import com.tunhire.tunhire.auth.dto.UserDto;
-import com.tunhire.tunhire.auth.service.AuthService;
-import com.tunhire.tunhire.common.dto.ApiResponse;
+import com.tunhire.tunhire.auth.AuthResponse;
+import com.tunhire.tunhire.auth.LoginRequest;
+import com.tunhire.tunhire.auth.RegisterRequest;
+import com.tunhire.tunhire.auth.UserDto;
+import com.tunhire.tunhire.auth.AuthService;
+import com.tunhire.tunhire.common.ApiResponse;
 
 import jakarta.validation.Valid;
 

@@ -1,7 +1,7 @@
 package com.tunhire.tunhire.jobs.service;
 
-import com.tunhire.tunhire.companies.dto.JobSummaryDto;
-import com.tunhire.tunhire.companies.service.JobSummaryProvider;
+import com.tunhire.tunhire.companies.JobSummaryDto;
+import com.tunhire.tunhire.companies.JobSummaryProvider;
 import com.tunhire.tunhire.jobs.entity.Job;
 import com.tunhire.tunhire.jobs.repository.JobRepository;
 import java.util.List;

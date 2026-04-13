@@ -1,15 +1,16 @@
 package com.tunhire.tunhire.companies.service;
 
-import com.tunhire.tunhire.companies.dto.CompanyCreateRequest;
-import com.tunhire.tunhire.companies.dto.CompanyResponse;
+import com.tunhire.tunhire.companies.CompanyCreateRequest;
+import com.tunhire.tunhire.companies.CompanyResponse;
 import com.tunhire.tunhire.companies.entity.Company;
 import com.tunhire.tunhire.companies.repository.CompanyRepository;
-import com.tunhire.tunhire.recruiter.service.MembershipService;
+import com.tunhire.tunhire.recruiter.MembershipService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 
@@ -26,7 +27,10 @@ class CompanyServiceTest {
 	@Mock
 	private MembershipService membershipService;
 
-	@InjectMocks
+@Mock
+    private ApplicationEventPublisher events;
+
+    @InjectMocks
 	private CompanyService companyService;
 
 	@Test

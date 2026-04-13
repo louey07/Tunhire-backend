@@ -1,28 +1,41 @@
 package com.tunhire.tunhire.recruiter.service;
+import com.tunhire.tunhire.recruiter.MembershipService;
 
-import com.tunhire.tunhire.common.exception.ResourceNotFoundException;
-import com.tunhire.tunhire.companies.entity.Company;
-import com.tunhire.tunhire.companies.repository.CompanyRepository;
-import com.tunhire.tunhire.recruiter.dto.MembershipRequest;
-import com.tunhire.tunhire.recruiter.dto.MembershipResponse;
+import com.tunhire.tunhire.recruiter.MembershipService;
+
+
+import com.tunhire.tunhire.common.ResourceNotFoundException;
+import com.tunhire.tunhire.recruiter.MembershipRequest;
+import com.tunhire.tunhire.recruiter.MembershipResponse;
 import com.tunhire.tunhire.recruiter.entity.CompanyMembership;
-import com.tunhire.tunhire.recruiter.entity.MemberRole;
+import com.tunhire.tunhire.recruiter.MemberRole;
 import com.tunhire.tunhire.recruiter.repository.CompanyMembershipRepository;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.tunhire.tunhire.common.CompanyCreatedEvent;
 
 @Service
 @Transactional
 public class MembershipServiceImpl implements MembershipService {
 
     private final CompanyMembershipRepository membershipRepository;
-    private final CompanyRepository companyRepository;
 
-    public MembershipServiceImpl(CompanyMembershipRepository membershipRepository, CompanyRepository companyRepository) {
+
+    public MembershipServiceImpl(CompanyMembershipRepository membershipRepository) {
         this.membershipRepository = membershipRepository;
-        this.companyRepository = companyRepository;
+    }
+
+    @ApplicationModuleListener
+    void onCompanyCreated(CompanyCreatedEvent event) {
+        CompanyMembership newMember = CompanyMembership.builder()
+            .companyId(event.companyId())
+            .userId(event.creatorUserId())
+            .role(MemberRole.OWNER)
+            .build();
+        membershipRepository.save(newMember);
     }
 
     @Override
@@ -39,7 +52,7 @@ public class MembershipServiceImpl implements MembershipService {
     public Long getCompanyIdByUserId(Long userId) {
         return membershipRepository.findByUserId(userId)
             .stream().findFirst()
-            .map(m -> m.getCompany().getId())
+            .map(m -> m.getCompanyId())
             .orElseThrow(() -> new IllegalArgumentException("User does not belong to any company"));
     }
 
@@ -49,11 +62,8 @@ public class MembershipServiceImpl implements MembershipService {
         if (hasMembers && !isOwnerOrAdmin(companyId, currentUserId)) {
             throw new IllegalArgumentException("You do not have permission to add members");
         }
-        Company company = companyRepository.findById(companyId)
-            .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
-        
         CompanyMembership newMember = CompanyMembership.builder()
-            .company(company)
+            .companyId(companyId)
             .userId(request.userId())
             .role(request.role())
             .build();
@@ -97,7 +107,7 @@ public class MembershipServiceImpl implements MembershipService {
     private MembershipResponse toResponse(CompanyMembership membership) {
         return new MembershipResponse(
             membership.getId(),
-            membership.getCompany().getId(),
+            membership.getCompanyId(),
             membership.getUserId(),
             membership.getRole(),
             membership.getJoinedAt()

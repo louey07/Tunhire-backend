@@ -1,10 +1,10 @@
 package com.tunhire.tunhire.recruiter.controller;
 
-import com.tunhire.tunhire.auth.service.AuthService;
-import com.tunhire.tunhire.recruiter.dto.MembershipRequest;
-import com.tunhire.tunhire.recruiter.dto.MembershipResponse;
-import com.tunhire.tunhire.recruiter.entity.MemberRole;
-import com.tunhire.tunhire.recruiter.service.MembershipService;
+import com.tunhire.tunhire.auth.AuthService;
+import com.tunhire.tunhire.recruiter.MembershipRequest;
+import com.tunhire.tunhire.recruiter.MembershipResponse;
+import com.tunhire.tunhire.recruiter.MemberRole;
+import com.tunhire.tunhire.recruiter.MembershipService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;

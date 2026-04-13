@@ -1,7 +1,14 @@
 package com.tunhire.tunhire.recruiter.entity;
 
-import com.tunhire.tunhire.companies.entity.Company;
+
 import jakarta.persistence.*;
+import com.tunhire.tunhire.recruiter.MemberRole;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -30,9 +37,8 @@ public class CompanyMembership {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
+    @Column(name = "company_id", nullable = false)
+    private Long companyId;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
@@ -53,4 +59,5 @@ public class CompanyMembership {
         joinedAt = LocalDateTime.now();
     }
 }
+
 

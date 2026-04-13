@@ -1,21 +1,114 @@
 {
   "info": {
     "name": "Tunhire API",
-    "description": "Companies and Applications endpoints",
+    "description": "Comprehensive API collection for Tunhire",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
       "value": "http://localhost:8081"
+    },
+    {
+      "key": "token",
+      "value": ""
     }
   ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
   "item": [
     {
-      "name": "Companies",
+      "name": "Auth",
       "item": [
         {
-          "name": "Create company",
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phone\": \"+123456789\",\n  \"role\": \"CANDIDATE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Create Job",
           "request": {
             "method": "POST",
             "header": [
@@ -26,7 +119,120 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Acme\",\n  \"slug\": \"acme\",\n  \"description\": \"Fintech company\",\n  \"logoUrl\": \"https://example.com/logo.png\",\n  \"website\": \"https://acme.tn\",\n  \"location\": \"Tunis\"\n}"
+              "raw": "{\n  \"title\": \"Software Engineer\",\n  \"companyId\": 1,\n  \"location\": \"Remote\",\n  \"description\": \"Great job!\",\n  \"contractType\": \"FULL_TIME\",\n  \"experienceLevel\": \"MID_LEVEL\",\n  \"salaryMin\": 50000,\n  \"salaryMax\": 80000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jobs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Jobs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jobs?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jobs"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Job by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jobs/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jobs",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Software Engineer Updated\",\n  \"companyId\": 1,\n  \"location\": \"Remote\",\n  \"description\": \"Updated description\",\n  \"contractType\": \"FULL_TIME\",\n  \"experienceLevel\": \"SENIOR\",\n  \"salaryMin\": 60000,\n  \"salaryMax\": 90000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jobs",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Job",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/jobs/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jobs",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Companies",
+      "item": [
+        {
+          "name": "Create Company",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme\",\n  \"slug\": \"acme\",\n  \"description\": \"Tech company\",\n  \"logoUrl\": \"https://example.com/logo.png\",\n  \"website\": \"https://acme.com\",\n  \"location\": \"Remote\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/companies",
@@ -40,7 +246,7 @@
           }
         },
         {
-          "name": "Get company by id",
+          "name": "Get Company by ID",
           "request": {
             "method": "GET",
             "url": {
@@ -56,7 +262,7 @@
           }
         },
         {
-          "name": "Get company by slug",
+          "name": "Get Company by Slug",
           "request": {
             "method": "GET",
             "url": {
@@ -73,7 +279,7 @@
           }
         },
         {
-          "name": "Update company",
+          "name": "Update Company",
           "request": {
             "method": "PUT",
             "header": [
@@ -84,7 +290,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Acme Updated\",\n  \"description\": \"Updated description\",\n  \"logoUrl\": \"https://example.com/logo2.png\",\n  \"website\": \"https://acme.tn\",\n  \"location\": \"Sfax\"\n}"
+              "raw": "{\n  \"name\": \"Acme Updated\",\n  \"description\": \"Updated details\",\n  \"logoUrl\": \"https://example.com/logo-up.png\",\n  \"website\": \"https://acme.org\",\n  \"location\": \"New York\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/companies/1",
@@ -99,7 +305,7 @@
           }
         },
         {
-          "name": "Company jobs",
+          "name": "Company Jobs",
           "request": {
             "method": "GET",
             "url": {
@@ -116,7 +322,7 @@
           }
         },
         {
-          "name": "Company applications",
+          "name": "Company Applications",
           "request": {
             "method": "GET",
             "url": {
@@ -133,7 +339,7 @@
           }
         },
         {
-          "name": "Company dashboard",
+          "name": "Company Dashboard",
           "request": {
             "method": "GET",
             "url": {
@@ -155,7 +361,7 @@
       "name": "Applications",
       "item": [
         {
-          "name": "Create application",
+          "name": "Create Application",
           "request": {
             "method": "POST",
             "header": [
@@ -166,7 +372,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jobId\": 10,\n  \"userId\": 20\n}"
+              "raw": "{\n  \"jobId\": 1\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/applications",
@@ -180,7 +386,7 @@
           }
         },
         {
-          "name": "Get application by id",
+          "name": "Get Application by ID",
           "request": {
             "method": "GET",
             "url": {
@@ -196,11 +402,11 @@
           }
         },
         {
-          "name": "List applications by jobId",
+          "name": "List Applications (by jobId)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/applications?jobId=10",
+              "raw": "{{baseUrl}}/applications?jobId=1",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -210,18 +416,18 @@
               "query": [
                 {
                   "key": "jobId",
-                  "value": "10"
+                  "value": "1"
                 }
               ]
             }
           }
         },
         {
-          "name": "List applications by userId",
+          "name": "List Applications (by userId)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/applications?userId=20",
+              "raw": "{{baseUrl}}/applications?userId=2",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -231,7 +437,207 @@
               "query": [
                 {
                   "key": "userId",
-                  "value": "20"
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Candidate",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/candidates/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "candidates",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Java Developer with 5 years exp\",\n  \"resumeUrl\": \"https://example.com/resume.pdf\",\n  \"location\": \"Tunis\",\n  \"availableFrom\": \"2023-01-01\",\n  \"yearsOfExperience\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/candidates/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "candidates",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Skill",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skillName\": \"Spring Boot\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/candidates/me/skills",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "candidates",
+                "me",
+                "skills"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remove Skill",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/candidates/me/skills/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "candidates",
+                "me",
+                "skills",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Public Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/candidates/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "candidates",
+                "2"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recruiter Memberships",
+      "item": [
+        {
+          "name": "Get Members",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/companies/1/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "companies",
+                "1",
+                "members"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 3,\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/companies/1/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "companies",
+                "1",
+                "members"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remove Member",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/companies/1/members/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "companies",
+                "1",
+                "members",
+                "3"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Member Role",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/companies/1/members/3/role?role=OWNER",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "companies",
+                "1",
+                "members",
+                "3",
+                "role"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "OWNER"
                 }
               ]
             }

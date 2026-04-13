@@ -40,7 +40,9 @@
 - [x] Restrict `POST /companies`, `PUT /companies/{id}` to `ROLE_RECRUITER` or `ROLE_ADMIN`
 
 ### TASK-010 — Fix user enumeration vulnerability in login
+- [x] Fix user enumeration vulnerability in login
 ### TASK-011 — Externalize secrets from `application.properties`
+- [x] Externalize secrets from `application.properties`
 
 ## 🟠 Priority 3 — Broken Functionality
 ### TASK-012 — Fix test database configuration

@@ -1,11 +1,11 @@
 package com.tunhire.tunhire.applications.controller;
 
-import com.tunhire.tunhire.applications.dto.ApplicationCreateRequest;
-import com.tunhire.tunhire.applications.dto.ApplicationResponse;
-import com.tunhire.tunhire.applications.dto.ApplicationSummary;
-import com.tunhire.tunhire.applications.service.ApplicationService;
-import com.tunhire.tunhire.auth.service.AuthService;
-import com.tunhire.tunhire.common.dto.ApiResponse;
+import com.tunhire.tunhire.applications.ApplicationCreateRequest;
+import com.tunhire.tunhire.applications.ApplicationResponse;
+import com.tunhire.tunhire.applications.ApplicationSummary;
+import com.tunhire.tunhire.applications.ApplicationService;
+import com.tunhire.tunhire.auth.AuthService;
+import com.tunhire.tunhire.common.ApiResponse;
 import java.security.Principal;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;

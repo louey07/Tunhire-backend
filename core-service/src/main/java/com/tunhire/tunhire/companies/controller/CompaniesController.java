@@ -1,14 +1,14 @@
 package com.tunhire.tunhire.companies.controller;
 
-import com.tunhire.tunhire.applications.dto.ApplicationSummary;
-import com.tunhire.tunhire.auth.service.AuthService;
-import com.tunhire.tunhire.common.dto.ApiResponse;
-import com.tunhire.tunhire.companies.dto.CompanyCreateRequest;
-import com.tunhire.tunhire.companies.dto.CompanyDashboardResponse;
-import com.tunhire.tunhire.companies.dto.CompanyResponse;
-import com.tunhire.tunhire.companies.dto.CompanyUpdateRequest;
-import com.tunhire.tunhire.companies.dto.JobSummaryDto;
-import com.tunhire.tunhire.companies.service.CompanyDashboardService;
+import com.tunhire.tunhire.applications.ApplicationSummary;
+import com.tunhire.tunhire.auth.AuthService;
+import com.tunhire.tunhire.common.ApiResponse;
+import com.tunhire.tunhire.companies.CompanyCreateRequest;
+import com.tunhire.tunhire.companies.CompanyDashboardResponse;
+import com.tunhire.tunhire.companies.CompanyResponse;
+import com.tunhire.tunhire.companies.CompanyUpdateRequest;
+import com.tunhire.tunhire.companies.JobSummaryDto;
+import com.tunhire.tunhire.companies.CompanyDashboardService;
 import com.tunhire.tunhire.companies.service.CompanyService;
 import java.security.Principal;
 import java.util.List;

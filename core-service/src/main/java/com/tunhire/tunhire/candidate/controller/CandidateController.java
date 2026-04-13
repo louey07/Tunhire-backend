@@ -1,11 +1,11 @@
 package com.tunhire.tunhire.candidate.controller;
 
-import com.tunhire.tunhire.auth.service.AuthService;
-import com.tunhire.tunhire.candidate.dto.CandidateProfileResponse;
-import com.tunhire.tunhire.candidate.dto.CandidateSkillResponse;
-import com.tunhire.tunhire.candidate.dto.SkillRequest;
-import com.tunhire.tunhire.candidate.dto.UpdateProfileRequest;
-import com.tunhire.tunhire.candidate.service.CandidateService;
+import com.tunhire.tunhire.auth.AuthService;
+import com.tunhire.tunhire.candidate.CandidateProfileResponse;
+import com.tunhire.tunhire.candidate.CandidateSkillResponse;
+import com.tunhire.tunhire.candidate.SkillRequest;
+import com.tunhire.tunhire.candidate.UpdateProfileRequest;
+import com.tunhire.tunhire.candidate.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

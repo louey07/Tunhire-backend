@@ -1,11 +1,11 @@
 package com.tunhire.tunhire.jobs.controller;
 
-import com.tunhire.tunhire.auth.service.AuthService;
-import com.tunhire.tunhire.common.dto.ApiResponse;
-import com.tunhire.tunhire.common.exception.ResourceNotFoundException;
-import com.tunhire.tunhire.jobs.dto.JobRequest;
-import com.tunhire.tunhire.jobs.dto.JobResponse;
-import com.tunhire.tunhire.jobs.service.JobService;
+import com.tunhire.tunhire.auth.AuthService;
+import com.tunhire.tunhire.common.ApiResponse;
+import com.tunhire.tunhire.common.ResourceNotFoundException;
+import com.tunhire.tunhire.jobs.JobRequest;
+import com.tunhire.tunhire.jobs.JobResponse;
+import com.tunhire.tunhire.jobs.JobService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.data.domain.Page;

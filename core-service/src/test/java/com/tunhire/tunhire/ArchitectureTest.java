@@ -8,8 +8,14 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.junit.jupiter.api.Test;
+import org.springframework.modulith.core.ApplicationModules;
 
 class ArchitectureTest {
+
+    @Test
+    void verifiesModularStructure() {
+        ApplicationModules.of(TunhireApplication.class).verify();
+    }
 
     private final JavaClasses classes = new ClassFileImporter()
         .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)

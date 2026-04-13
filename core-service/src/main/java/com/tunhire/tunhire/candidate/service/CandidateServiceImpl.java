@@ -1,9 +1,13 @@
 package com.tunhire.tunhire.candidate.service;
+import com.tunhire.tunhire.candidate.CandidateService;
 
-import com.tunhire.tunhire.candidate.dto.CandidateProfileResponse;
-import com.tunhire.tunhire.candidate.dto.CandidateSkillResponse;
-import com.tunhire.tunhire.candidate.dto.SkillRequest;
-import com.tunhire.tunhire.candidate.dto.UpdateProfileRequest;
+import com.tunhire.tunhire.candidate.CandidateService;
+
+
+import com.tunhire.tunhire.candidate.CandidateProfileResponse;
+import com.tunhire.tunhire.candidate.CandidateSkillResponse;
+import com.tunhire.tunhire.candidate.SkillRequest;
+import com.tunhire.tunhire.candidate.UpdateProfileRequest;
 import com.tunhire.tunhire.candidate.entity.CandidateProfile;
 import com.tunhire.tunhire.candidate.entity.CandidateSkill;
 import com.tunhire.tunhire.candidate.repository.CandidateProfileRepository;
@@ -11,8 +15,10 @@ import com.tunhire.tunhire.candidate.repository.CandidateSkillRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.tunhire.tunhire.auth.CandidateRegisteredEvent;
 
 @Service
 @Transactional
@@ -21,6 +27,12 @@ public class CandidateServiceImpl implements CandidateService {
 
     private final CandidateProfileRepository profileRepository;
     private final CandidateSkillRepository skillRepository;
+
+    @ApplicationModuleListener
+    void onCandidateRegistered(CandidateRegisteredEvent event) {
+        profileRepository.findByUserId(event.userId())
+            .orElseGet(() -> createEmptyProfile(event.userId()));
+    }
 
     @Override
     @Transactional

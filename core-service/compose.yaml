@@ -16,9 +16,9 @@ services:
       - postgres
     environment:
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tunhire"
-      - "DB_USERNAME=${DB_USERNAME:-tunhire}"
-      - "DB_PASSWORD=${DB_PASSWORD:-tunhire}"
-      - "JWT_SECRET=${JWT_SECRET:-tunhire-secret-key-must-be-at-least-32-characters-long}"
+      - "POSTGRES_USER=${DB_USERNAME:-tunhire}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD:-tunhire}"
+      - "JWT_SECRET=${JWT_SECRET:-my-secret-key-that-is-at-least-256-bits-long}"
       - "SPRING_JPA_HIBERNATE_DDL_AUTO=update"
     ports:
       - "8081:8080"

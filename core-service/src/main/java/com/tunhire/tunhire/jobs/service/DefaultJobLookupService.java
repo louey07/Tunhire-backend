@@ -1,6 +1,6 @@
 package com.tunhire.tunhire.jobs.service;
 
-import com.tunhire.tunhire.applications.service.JobLookupService;
+import com.tunhire.tunhire.applications.JobLookupService;
 import com.tunhire.tunhire.jobs.entity.Job;
 import com.tunhire.tunhire.jobs.repository.JobRepository;
 import java.util.List;

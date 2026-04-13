@@ -1,6 +1,6 @@
 package com.tunhire.tunhire.jobs.entity;
 
-import com.tunhire.tunhire.companies.entity.Company;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -41,9 +41,8 @@ public class Job {
     @Column(nullable = false)
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
+    @Column(name = "company_id", nullable = false)
+    private Long companyId;
 
     @Column(nullable = false)
     private String location;

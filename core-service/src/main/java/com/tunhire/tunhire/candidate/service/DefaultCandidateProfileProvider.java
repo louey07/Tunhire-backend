@@ -1,11 +1,11 @@
 package com.tunhire.tunhire.candidate.service;
 
-import com.tunhire.tunhire.auth.dto.UserDto;
-import com.tunhire.tunhire.auth.service.AuthService;
+import com.tunhire.tunhire.auth.UserDto;
+import com.tunhire.tunhire.auth.AuthService;
 import com.tunhire.tunhire.candidate.entity.CandidateProfile;
 import com.tunhire.tunhire.candidate.repository.CandidateProfileRepository;
-import com.tunhire.tunhire.common.candidate.CandidateProfileProvider;
-import com.tunhire.tunhire.common.candidate.CandidateSummaryDto;
+import com.tunhire.tunhire.candidate.CandidateProfileProvider;
+import com.tunhire.tunhire.common.CandidateSummaryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

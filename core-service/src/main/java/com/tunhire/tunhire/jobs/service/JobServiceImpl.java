@@ -1,13 +1,15 @@
 package com.tunhire.tunhire.jobs.service;
+import com.tunhire.tunhire.jobs.JobService;
 
-import com.tunhire.tunhire.common.exception.ResourceNotFoundException;
-import com.tunhire.tunhire.companies.entity.Company;
-import com.tunhire.tunhire.companies.repository.CompanyRepository;
-import com.tunhire.tunhire.jobs.dto.JobRequest;
-import com.tunhire.tunhire.jobs.dto.JobResponse;
+import com.tunhire.tunhire.jobs.JobService;
+
+
+import com.tunhire.tunhire.common.ResourceNotFoundException;
+import com.tunhire.tunhire.jobs.JobRequest;
+import com.tunhire.tunhire.jobs.JobResponse;
 import com.tunhire.tunhire.jobs.entity.Job;
 import com.tunhire.tunhire.jobs.repository.JobRepository;
-import com.tunhire.tunhire.recruiter.service.MembershipService;
+import com.tunhire.tunhire.recruiter.MembershipService;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,16 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
-    private final CompanyRepository companyRepository;
+    
     private final MembershipService membershipService;
 
     public JobServiceImpl(
         JobRepository jobRepository,
-        CompanyRepository companyRepository,
         MembershipService membershipService
     ) {
         this.jobRepository = jobRepository;
-        this.companyRepository = companyRepository;
         this.membershipService = membershipService;
     }
 
@@ -41,15 +41,9 @@ public class JobServiceImpl implements JobService {
             throw new IllegalArgumentException("You are not a member of this company");
         }
 
-        Company company = companyRepository
-            .findById(request.companyId())
-            .orElseThrow(() ->
-                new ResourceNotFoundException("Company not found")
-            );
-
         Job job = new Job();
         job.setTitle(request.title());
-        job.setCompany(company);
+        job.setCompanyId(request.companyId());
         job.setLocation(request.location());
         job.setDescription(request.description());
         job.setContractType(request.contractType());
@@ -83,20 +77,14 @@ public class JobServiceImpl implements JobService {
             .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
 
-        if (!membershipService.isMember(job.getCompany().getId(), recruiterId)) {
+        if (!membershipService.isMember(job.getCompanyId(), recruiterId)) {
             throw new IllegalArgumentException(
                 "You do not have permission to update this job"
             );
         }
 
-        Company company = companyRepository
-            .findById(request.companyId())
-            .orElseThrow(() ->
-                new ResourceNotFoundException("Company not found")
-            );
-
         job.setTitle(request.title());
-        job.setCompany(company);
+        job.setCompanyId(request.companyId());
         job.setLocation(request.location());
         job.setDescription(request.description());
         job.setContractType(request.contractType());
@@ -113,7 +101,7 @@ public class JobServiceImpl implements JobService {
             .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
 
-        if (!membershipService.isMember(job.getCompany().getId(), recruiterId)) {
+        if (!membershipService.isMember(job.getCompanyId(), recruiterId)) {
             throw new IllegalArgumentException(
                 "You do not have permission to delete this job"
             );
@@ -126,8 +114,8 @@ public class JobServiceImpl implements JobService {
         return new JobResponse(
             job.getId(),
             job.getTitle(),
-            job.getCompany().getId(),
-            job.getCompany().getName(),
+            job.getCompanyId(),
+            "",
             job.getLocation(),
             job.getDescription(),
             job.getContractType(),

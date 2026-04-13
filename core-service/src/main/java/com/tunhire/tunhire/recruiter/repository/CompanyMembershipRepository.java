@@ -1,7 +1,7 @@
 package com.tunhire.tunhire.recruiter.repository;
 
 import com.tunhire.tunhire.recruiter.entity.CompanyMembership;
-import com.tunhire.tunhire.recruiter.entity.MemberRole;
+import com.tunhire.tunhire.recruiter.MemberRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

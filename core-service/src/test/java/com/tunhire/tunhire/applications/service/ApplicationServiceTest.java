@@ -1,4 +1,6 @@
 package com.tunhire.tunhire.applications.service;
+import com.tunhire.tunhire.applications.JobLookupService;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -6,12 +8,14 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
-import com.tunhire.tunhire.applications.dto.ApplicationCreateRequest;
-import com.tunhire.tunhire.applications.dto.ApplicationSummary;
+import com.tunhire.tunhire.applications.ApplicationCreateRequest;
+import com.tunhire.tunhire.applications.ApplicationSummary;
+import com.tunhire.tunhire.applications.ApplicationService;
 import com.tunhire.tunhire.applications.entity.Application;
+import com.tunhire.tunhire.applications.ApplicationService;
 import com.tunhire.tunhire.applications.entity.ApplicationStatus;
 import com.tunhire.tunhire.applications.repository.ApplicationRepository;
-import com.tunhire.tunhire.common.candidate.CandidateProfileProvider;
+import com.tunhire.tunhire.candidate.CandidateProfileProvider;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -92,4 +96,5 @@ class ApplicationServiceTest {
         return application;
     }
 }
+
 

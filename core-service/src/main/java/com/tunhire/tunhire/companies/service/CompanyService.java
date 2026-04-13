@@ -1,14 +1,16 @@
 package com.tunhire.tunhire.companies.service;
 
-import com.tunhire.tunhire.common.exception.ResourceNotFoundException;
-import com.tunhire.tunhire.companies.dto.CompanyCreateRequest;
-import com.tunhire.tunhire.companies.dto.CompanyResponse;
-import com.tunhire.tunhire.companies.dto.CompanyUpdateRequest;
+import com.tunhire.tunhire.common.ResourceNotFoundException;
+import com.tunhire.tunhire.common.CompanyCreatedEvent;
+import com.tunhire.tunhire.companies.CompanyCreateRequest;
+import com.tunhire.tunhire.companies.CompanyResponse;
+import com.tunhire.tunhire.companies.CompanyUpdateRequest;
 import com.tunhire.tunhire.companies.entity.Company;
 import com.tunhire.tunhire.companies.repository.CompanyRepository;
-import com.tunhire.tunhire.recruiter.service.MembershipService;
-import com.tunhire.tunhire.recruiter.dto.MembershipRequest;
-import com.tunhire.tunhire.recruiter.entity.MemberRole;
+import com.tunhire.tunhire.recruiter.MembershipService;
+import com.tunhire.tunhire.recruiter.MembershipRequest;
+import com.tunhire.tunhire.recruiter.MemberRole;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +20,12 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final MembershipService membershipService;
+    private final ApplicationEventPublisher events;
 
-    public CompanyService(CompanyRepository companyRepository, MembershipService membershipService) {
+    public CompanyService(CompanyRepository companyRepository, MembershipService membershipService, ApplicationEventPublisher events) {
         this.companyRepository = companyRepository;
         this.membershipService = membershipService;
+        this.events = events;
     }
 
     public CompanyResponse create(CompanyCreateRequest request, Long currentUserId) {
@@ -34,9 +38,9 @@ public class CompanyService {
         company.setLocation(request.location());
         Company savedCompany = companyRepository.save(company);
         
-        // Add the creator as the OWNER
-        membershipService.addMember(savedCompany.getId(), new MembershipRequest(currentUserId, MemberRole.OWNER), currentUserId);
-        
+        // Add the creator as the OWNER asynchronously
+        events.publishEvent(new CompanyCreatedEvent(savedCompany.getId(), currentUserId));
+
         return toResponse(savedCompany);
     }
 
