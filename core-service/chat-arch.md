@@ -12,13 +12,13 @@
   - **Documentation**: springdoc-openapi (Swagger UI)
   - **Build Tool**: Maven
 - **Entry points**: 
-  - Main application class: `src/main/java/com/example/tunhire/TunhireApplication.java`
+  - Main application class: `src/main/java/com.tunhire/tunhire/TunhireApplication.java`
   - Build/Start: `./mvnw spring-boot:run`
 
 ### 2. Folder Structure & Purpose
-The project follows a **Feature-Based (Domain)** folder structure. Each top-level folder under `com.example.tunhire` represents a distinct architectural module.
+The project follows a **Feature-Based (Domain)** folder structure. Each top-level folder under `com.tunhire.tunhire` represents a distinct architectural module.
 
-- `src/main/java/com/example/tunhire/`
+- `src/main/java/com.tunhire/tunhire/`
   - `auth/`: Identity management, user registration, login, JWT generation, and global roles.
   - `companies/`: Employer branding, company profiles, and aggregate dashboard views.
   - `jobs/`: Job listing lifecycle, job search, and requirements.
@@ -29,7 +29,7 @@ The project follows a **Feature-Based (Domain)** folder structure. Each top-leve
 - `src/main/resources/`
   - `application.properties`: Primary configuration file.
 - `src/test/java/`
-  - `com/example/tunhire/ArchitectureTest.java`: ArchUnit tests enforcing module boundaries.
+  - `com.tunhire/tunhire/ArchitectureTest.java`: ArchUnit tests enforcing module boundaries.
 - `compose.yaml`: Docker Compose file defining the PostgreSQL database service.
 
 ### 3. Architecture & Design Patterns

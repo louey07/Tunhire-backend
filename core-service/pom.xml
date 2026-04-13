@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>com.example</groupId>
+	<groupId>com.tunhire</groupId>
 	<artifactId>tunhire</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tunhire</name>
@@ -148,3 +148,4 @@
 	</build>
 
 </project>
+
