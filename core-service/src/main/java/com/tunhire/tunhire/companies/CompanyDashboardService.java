@@ -1,15 +1,7 @@
 package com.tunhire.tunhire.companies;
-import com.tunhire.tunhire.companies.JobSummaryProvider;
-
-import com.tunhire.tunhire.companies.JobSummaryProvider;
-
-
 import com.tunhire.tunhire.applications.ApplicationSummary;
 import com.tunhire.tunhire.applications.ApplicationService;
-import com.tunhire.tunhire.companies.CompanyDashboardResponse;
-import com.tunhire.tunhire.companies.CompanyResponse;
-import com.tunhire.tunhire.companies.JobSummaryDto;
-import com.tunhire.tunhire.recruiter.MembershipService;
+import com.tunhire.tunhire.companies.service.MembershipService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.tunhire.tunhire.companies.service.CompanyService;

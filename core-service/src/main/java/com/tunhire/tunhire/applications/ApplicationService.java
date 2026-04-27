@@ -1,19 +1,11 @@
 package com.tunhire.tunhire.applications;
-import com.tunhire.tunhire.applications.JobLookupService;
-
-import com.tunhire.tunhire.applications.JobLookupService;
-
-
-import com.tunhire.tunhire.applications.ApplicationCreateRequest;
-import com.tunhire.tunhire.applications.ApplicationResponse;
-import com.tunhire.tunhire.applications.ApplicationSummary;
 import com.tunhire.tunhire.applications.entity.Application;
 import com.tunhire.tunhire.applications.entity.ApplicationStatus;
 import com.tunhire.tunhire.applications.repository.ApplicationRepository;
 import com.tunhire.tunhire.candidate.CandidateProfileProvider;
 import com.tunhire.tunhire.common.CandidateSummaryDto;
 import com.tunhire.tunhire.common.ResourceNotFoundException;
-import java.time.Instant;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,6 +64,19 @@ public class ApplicationService {
             return Collections.emptyList();
         }
         return toSummaryList(applicationRepository.findByJobIdIn(jobIds));
+    }
+
+    public ApplicationResponse updateStatus(Long applicationId, ApplicationStatus status, Long recruiterId) {
+        Application application = applicationRepository
+            .findById(applicationId)
+            .orElseThrow(() -> new ResourceNotFoundException("Application not found"));
+            
+        if (!jobLookupService.isRecruiterAuthorizedForJob(application.getJobId(), recruiterId)) {
+            throw new IllegalArgumentException("You do not have permission to update this application");
+        }
+        
+        application.setStatus(status);
+        return toResponse(applicationRepository.save(application));
     }
 
     private ApplicationResponse toResponse(Application application) {

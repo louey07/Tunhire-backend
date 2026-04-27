@@ -1,10 +1,5 @@
 package com.tunhire.tunhire.auth;
 
-import com.tunhire.tunhire.auth.AuthResponse;
-import com.tunhire.tunhire.auth.LoginRequest;
-import com.tunhire.tunhire.auth.RegisterRequest;
-import com.tunhire.tunhire.auth.UserDto;
-
 public interface AuthService {
     /**
      * Register a new user and return a JWT token

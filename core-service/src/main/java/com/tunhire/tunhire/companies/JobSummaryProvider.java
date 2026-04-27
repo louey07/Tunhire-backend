@@ -1,6 +1,5 @@
 package com.tunhire.tunhire.companies;
 
-import com.tunhire.tunhire.companies.JobSummaryDto;
 
 import java.util.List;
 

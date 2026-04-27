@@ -10,12 +10,14 @@ import java.security.Principal;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.tunhire.tunhire.applications.entity.ApplicationStatus;
 
 @RestController
 @RequestMapping("/applications")
@@ -50,6 +52,20 @@ public class ApplicationsController {
         return ApiResponse.ok(
             "Application fetched",
             applicationService.getById(id)
+        );
+    }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('RECRUITER')")
+    public ApiResponse<ApplicationResponse> updateStatus(
+        @PathVariable Long id,
+        @RequestParam ApplicationStatus status,
+        Principal principal
+    ) {
+        Long recruiterId = authService.getUserIdByEmail(principal.getName());
+        return ApiResponse.ok(
+            "Application status updated",
+            applicationService.updateStatus(id, status, recruiterId)
         );
     }
 

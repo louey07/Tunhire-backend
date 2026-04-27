@@ -1,9 +1,5 @@
 package com.tunhire.tunhire.candidate.service;
 import com.tunhire.tunhire.candidate.CandidateService;
-
-import com.tunhire.tunhire.candidate.CandidateService;
-
-
 import com.tunhire.tunhire.candidate.CandidateProfileResponse;
 import com.tunhire.tunhire.candidate.CandidateSkillResponse;
 import com.tunhire.tunhire.candidate.SkillRequest;

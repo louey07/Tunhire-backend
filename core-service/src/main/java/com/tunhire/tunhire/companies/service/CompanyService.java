@@ -7,9 +7,6 @@ import com.tunhire.tunhire.companies.CompanyResponse;
 import com.tunhire.tunhire.companies.CompanyUpdateRequest;
 import com.tunhire.tunhire.companies.entity.Company;
 import com.tunhire.tunhire.companies.repository.CompanyRepository;
-import com.tunhire.tunhire.recruiter.MembershipService;
-import com.tunhire.tunhire.recruiter.MembershipRequest;
-import com.tunhire.tunhire.recruiter.MemberRole;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +55,7 @@ public class CompanyService {
     }
 
     public CompanyResponse update(Long id, CompanyUpdateRequest request, Long currentUserId) {
-        if (!membershipService.isOwnerOrAdmin(id, currentUserId)) {
+        if (!membershipService.isRecruiterAdmin(id, currentUserId)) {
             throw new IllegalArgumentException("You do not have permission to update this company");
         }
         

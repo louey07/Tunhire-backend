@@ -1,6 +1,5 @@
 package com.tunhire.tunhire.common;
 
-import com.tunhire.tunhire.common.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;

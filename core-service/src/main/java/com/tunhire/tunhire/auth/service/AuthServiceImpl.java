@@ -11,7 +11,6 @@ import com.tunhire.tunhire.auth.repository.UserRepository;
 import com.tunhire.tunhire.auth.security.JwtUtil;
 import com.tunhire.tunhire.common.InvalidCredentialsException;
 import com.tunhire.tunhire.common.ResourceNotFoundException;
-import java.time.Instant;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

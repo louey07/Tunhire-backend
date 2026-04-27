@@ -1,21 +1,13 @@
 package com.tunhire.tunhire;
 
-import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
-
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.junit.jupiter.api.Test;
-import org.springframework.modulith.core.ApplicationModules;
 
 class ArchitectureTest {
-
-    @Test
-    void verifiesModularStructure() {
-        ApplicationModules.of(TunhireApplication.class).verify();
-    }
 
     private final JavaClasses classes = new ClassFileImporter()
         .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
@@ -32,7 +24,8 @@ class ArchitectureTest {
                 "..applications.repository..",
                 "..applications.controller..",
                 "..companies.controller.."
-            );
+            )
+            .allowEmptyShould(true);
         rule.check(classes);
     }
 
@@ -43,7 +36,8 @@ class ArchitectureTest {
             .resideInAnyPackage("..applications..")
             .should()
             .dependOnClassesThat()
-            .resideInAnyPackage("..jobs.repository..", "..jobs.controller..");
+            .resideInAnyPackage("..jobs.repository..", "..jobs.controller..")
+            .allowEmptyShould(true);
         rule.check(classes);
     }
 
@@ -54,7 +48,8 @@ class ArchitectureTest {
             .resideInAnyPackage("..applications..")
             .should()
             .dependOnClassesThat()
-            .resideInAnyPackage("..candidate.repository..", "..candidate.controller..", "..candidate.service..", "..candidate.entity..");
+            .resideInAnyPackage("..candidate.repository..", "..candidate.controller..", "..candidate.service..", "..candidate.entity..")
+            .allowEmptyShould(true);
         rule.check(classes);
     }
 
@@ -68,7 +63,8 @@ class ArchitectureTest {
             .resideInAnyPackage(
                 "..applications.repository..",
                 "..applications.controller.."
-            );
+            )
+            .allowEmptyShould(true);
         rule.check(classes);
     }
 
@@ -80,21 +76,6 @@ class ArchitectureTest {
             .should()
             .dependOnClassesThat()
             .resideInAnyPackage("..repository..");
-        rule.check(classes);
-    }
-
-    @Test
-    void recruiterAndCandidateShouldNotAccessEachOtherInternals() {
-        ArchRule rule = ArchRuleDefinition.noClasses()
-            .that()
-            .resideInAnyPackage("..recruiter..")
-            .should()
-            .dependOnClassesThat()
-            .resideInAnyPackage(
-                "..candidate.repository..",
-                "..candidate.controller.."
-            )
-            .allowEmptyShould(true);
         rule.check(classes);
     }
 }

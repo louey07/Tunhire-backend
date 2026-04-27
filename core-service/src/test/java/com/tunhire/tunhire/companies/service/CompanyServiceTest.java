@@ -4,7 +4,6 @@ import com.tunhire.tunhire.companies.CompanyCreateRequest;
 import com.tunhire.tunhire.companies.CompanyResponse;
 import com.tunhire.tunhire.companies.entity.Company;
 import com.tunhire.tunhire.companies.repository.CompanyRepository;
-import com.tunhire.tunhire.recruiter.MembershipService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
