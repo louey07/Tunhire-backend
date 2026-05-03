@@ -18,7 +18,7 @@ services:
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tunhire"
       - "POSTGRES_USER=${DB_USERNAME:-tunhire}"
       - "POSTGRES_PASSWORD=${DB_PASSWORD:-tunhire}"
-      - "JWT_SECRET=${JWT_SECRET:-my-secret-key-that-is-at-least-256-bits-long}"
+      - JWT_SECRET=${JWT_SECRET:-H2buFRxPuMGtCJLFhzqQPCMsUyStmTE+ycIdqwoI6Gk=}
       - "SPRING_JPA_HIBERNATE_DDL_AUTO=update"
     ports:
       - "8081:8080"

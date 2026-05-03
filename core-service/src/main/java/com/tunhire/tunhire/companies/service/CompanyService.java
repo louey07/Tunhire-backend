@@ -26,9 +26,14 @@ public class CompanyService {
     }
 
     public CompanyResponse create(CompanyCreateRequest request, Long currentUserId) {
+        String slug = request.name().toLowerCase()
+            .replaceAll("[^a-z0-9]", "-")
+            .replaceAll("-+", "-")
+            .replaceAll("^-|-$", "");
+
         Company company = new Company();
         company.setName(request.name());
-        company.setSlug(request.slug());
+        company.setSlug(slug);
         company.setDescription(request.description());
         company.setLogoUrl(request.logoUrl());
         company.setWebsite(request.website());

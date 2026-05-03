@@ -1,6 +1,7 @@
 package com.tunhire.tunhire.auth.config;
 
 import com.tunhire.tunhire.auth.security.JwtAuthenticationFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -57,12 +58,20 @@ public class SecurityConfig {
             .build();
     }
 
-    /**
-     * BCrypt password encoder - used to hash passwords before saving
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    // Prevent Spring Boot from auto-registering JwtAuthenticationFilter as a
+    // servlet filter — it is already added inside the security filter chain above.
+    @Bean
+    public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilterRegistration(
+            JwtAuthenticationFilter filter) {
+        FilterRegistrationBean<JwtAuthenticationFilter> registration =
+                new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
 }
 

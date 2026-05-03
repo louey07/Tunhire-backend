@@ -15,7 +15,8 @@ class CVParseResult(BaseModel):
     location: Optional[str] = None
     years_experience: int = 0
     skills: List[str] = Field(default_factory=list)
-    education: List[Education] = Field(default_factory=list)
-    raw_text: str
+    languages: List[str] = Field(default_factory=list)
+    education: List[str] = Field(default_factory=list)
+    raw_text: str = Field(exclude=True)
     parser_version: str = "1.0.0"
     confidence_score: float = 0.0

@@ -49,11 +49,11 @@ public class CandidateServiceImpl implements CandidateService {
             .findByUserId(userId)
             .orElseGet(() -> createEmptyProfile(userId));
 
-        profile.setBio(request.bio());
-        profile.setResumeUrl(request.resumeUrl());
-        profile.setLocation(request.location());
-        profile.setAvailableFrom(request.availableFrom());
-        profile.setYearsOfExperience(request.yearsOfExperience());
+        if (request.bio() != null) profile.setBio(request.bio());
+        if (request.resumeUrl() != null) profile.setResumeUrl(request.resumeUrl());
+        if (request.location() != null) profile.setLocation(request.location());
+        if (request.availableFrom() != null) profile.setAvailableFrom(request.availableFrom());
+        if (request.yearsOfExperience() != null) profile.setYearsOfExperience(request.yearsOfExperience());
 
         return mapToResponse(profileRepository.save(profile));
     }
@@ -80,6 +80,25 @@ public class CandidateServiceImpl implements CandidateService {
             .findByUserId(userId)
             .orElseThrow(() -> new RuntimeException("Profile not found"));
         skillRepository.deleteByIdAndProfileId(skillId, profile.getId());
+    }
+
+    @Override
+    @Transactional
+    public void updateSkillsFromCv(Long userId, List<String> skillNames) {
+        CandidateProfile profile = profileRepository
+            .findByUserId(userId)
+            .orElseGet(() -> createEmptyProfile(userId));
+
+        skillRepository.deleteAllByProfileId(profile.getId());
+
+        skillNames.stream()
+            .filter(name -> name != null && !name.isBlank())
+            .forEach(name -> {
+                CandidateSkill skill = new CandidateSkill();
+                skill.setProfileId(profile.getId());
+                skill.setSkillName(name);
+                skillRepository.save(skill);
+            });
     }
 
     @Override

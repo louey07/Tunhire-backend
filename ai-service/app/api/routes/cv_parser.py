@@ -5,26 +5,31 @@ from app.services.parsing_service import parse_cv_text
 
 router = APIRouter()
 
+
 @router.post("/parse", response_model=CVParseResult)
 async def parse_cv(file: UploadFile = File(...)):
-    if not file.filename.endswith((".pdf", ".docx")):
+    if not file.filename.lower().endswith((".pdf", ".docx")):
         raise HTTPException(status_code=400, detail="Only PDF and DOCX files are allowed.")
-    
+
     try:
-        raw_text = await extract_text_from_file(file)
-        parsed_data = parse_cv_text(raw_text)
-        
-        return CVParseResult(
-            full_name=parsed_data.get("full_name", ""),
-            email=parsed_data.get("email", ""),
-            phone=parsed_data.get("phone"),
-            location=parsed_data.get("location"),
-            years_experience=parsed_data.get("years_experience", 0),
-            skills=parsed_data.get("skills", []),
-            education=parsed_data.get("education", []),
-            raw_text=raw_text,
-            parser_version="1.0.0",
-            confidence_score=parsed_data.get("confidence_score", 0.0)
-        )
+        text = await extract_text_from_file(file)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Text extraction failed: {e}")
+
+    parsed = parse_cv_text(text)
+
+    return CVParseResult(
+        full_name=parsed["full_name"],
+        email=parsed["email"],
+        phone=parsed.get("phone"),
+        location=parsed.get("location"),
+        years_experience=parsed["years_experience"],
+        skills=parsed["skills"],
+        languages=parsed.get("languages", []),
+        education=parsed["education"],
+        raw_text=text,
+        parser_version="1.0.0",
+        confidence_score=parsed["confidence_score"],
+    )

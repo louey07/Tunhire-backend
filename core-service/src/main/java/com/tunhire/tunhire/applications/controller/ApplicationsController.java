@@ -4,6 +4,7 @@ import com.tunhire.tunhire.applications.ApplicationCreateRequest;
 import com.tunhire.tunhire.applications.ApplicationResponse;
 import com.tunhire.tunhire.applications.ApplicationSummary;
 import com.tunhire.tunhire.applications.ApplicationService;
+import com.tunhire.tunhire.applications.RankedApplicationResponse;
 import com.tunhire.tunhire.auth.AuthService;
 import com.tunhire.tunhire.common.ApiResponse;
 import java.security.Principal;
@@ -66,6 +67,17 @@ public class ApplicationsController {
         return ApiResponse.ok(
             "Application status updated",
             applicationService.updateStatus(id, status, recruiterId)
+        );
+    }
+
+    @GetMapping("/job/{jobId}/ranked")
+    @PreAuthorize("hasRole('RECRUITER')")
+    public ApiResponse<List<RankedApplicationResponse>> getRankedByJob(
+        @PathVariable Long jobId
+    ) {
+        return ApiResponse.ok(
+            "Ranked applications fetched",
+            applicationService.getRankedByJobId(jobId)
         );
     }
 
